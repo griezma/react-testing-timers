@@ -8,7 +8,6 @@ describe('CountdownTimer component', () => {
     })
     
     afterEach(() => {
-        // Because of "Using Fake Timers" in https://testing-library.com/docs/using-fake-timers/
         jest.runOnlyPendingTimers();
         jest.useRealTimers();
     });
@@ -45,10 +44,10 @@ describe('CountdownTimer component', () => {
         expect(queryByText(/countdown timer/)).toBeNull();
     });
 
-    it("should count down and vanish", () => {
+    it("should count down and vanish", async () => {
         const expireInfo = (remaining: number) => `Expires in ${remaining} seconds`;
 
-        const { getByText, queryByText } = render(
+        const { getByText, findByText, queryByText } = render(
             <CountdownTimer countdownSecs={5}>
                 {expireInfo}
             </CountdownTimer>);
@@ -56,7 +55,7 @@ describe('CountdownTimer component', () => {
         // should countdown from 5 to 1
         getByText(expireInfo(5));
         advanceTime(4000);
-        getByText(expireInfo(5 - 4));
+        await findByText(expireInfo(5 - 4));
 
         // should vanish after 1 second
         getByText(/Expires in/);
@@ -64,10 +63,10 @@ describe('CountdownTimer component', () => {
         expect(queryByText(/Expires in/)).toBeNull();
     });
 
-    test("expiration time can be updated after countdown started", () => {
+    test("expiration time can be updated after countdown started", async () => {
         const expirationInfo = (remaining: number) => `Expires in ${remaining} seconds`;
 
-        const { getByText, queryByText, rerender } = render(
+        const { getByText, findByText, queryByText, rerender } = render(
             <CountdownTimer countdownSecs={5}>
                 {remaining => <div>{expirationInfo(remaining)}</div>}
             </CountdownTimer>
@@ -76,7 +75,7 @@ describe('CountdownTimer component', () => {
         // should countdown from 5 to 3
         getByText(expirationInfo(5));
         advanceTime(2000);
-        getByText(expirationInfo(5 - 2));
+        await findByText(expirationInfo(5 - 2));
 
         // updating expiration time to 7
         rerender(
