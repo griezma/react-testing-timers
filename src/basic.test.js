@@ -15,7 +15,7 @@ afterAll(() => {
 });
 
 // seems to not be working as designed?!
-it.skip('calls the callback after 1 second via advanceTimersByTime', async () => {
+it.skip('calls the callback after 10 seconds via timerGame', async () => {
     const callback = jest.fn();
   
     timerGame(callback);
