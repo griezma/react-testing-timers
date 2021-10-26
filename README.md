@@ -1,3 +1,3 @@
-# React Testing Timer
+# React Testing Timers
 
-Example of testing timers with React.
+Example of testing timers with React
